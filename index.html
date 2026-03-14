@@ -964,8 +964,15 @@ async function sheetsCall(action,payload={}){
 }
 async function loadFromSheets(){
   if(!USING_SHEETS)return;
-  const data=await sheetsCall('getAll');
-  if(data&&data.events){events=data.events;devotees=data.devotees;if(data.notices)notices=data.notices;if(data.adminPin)ADMIN_PIN=data.adminPin;}
+  try {
+    const data=await sheetsCall('getAll');
+    if(data&&data.events!==undefined){
+      events=data.events||[];
+      devotees=data.devotees||[];
+      notices=data.notices||[];
+      if(data.adminPin)ADMIN_PIN=String(data.adminPin);
+    }
+  } catch(e){ console.log('Sheets load error',e); }
   renderHome();renderCalendar();renderDevotees('');
 }
 
