@@ -159,6 +159,12 @@ const USING_SHEETS = SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE';
 <!-- HOME -->
 <div id="page-home" class="page active">
 
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+    <span class="status-dot status-offline" id="status-dot"></span>
+    <span id="status-text" style="font-size:11px;color:var(--text-soft);flex:1">Loading...</span>
+    <button onclick="loadFromSheets()" style="font-size:11px;background:var(--crimson);color:#fff;border:none;padding:5px 12px;border-radius:20px;cursor:pointer">↻ Refresh</button>
+  </div>
+
   <!-- Latest notice — top priority -->
   <div id="home-notice-section"></div>
 
@@ -965,6 +971,15 @@ async function sheetsCall(action,payload={}){
     return await res.json();
   }catch(e){console.log('sheetsCall error',e);return null;}
 }
+function setStatus(online, msg) {
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+  if (!dot || !txt) return;
+  if (online === true) dot.className='status-dot status-online';
+  else dot.className='status-dot status-offline';
+  txt.textContent = msg;
+}
+
 async function loadFromSheets(){
   if(!USING_SHEETS){setStatus(false,'No URL');return;}
   setStatus(null,'Loading...');
