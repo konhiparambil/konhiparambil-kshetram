@@ -966,23 +966,25 @@ async function sheetsCall(action,payload={}){
   }catch(e){console.log('sheetsCall error',e);return null;}
 }
 async function loadFromSheets(){
-  if(!USING_SHEETS)return;
-  setStatus(null,'Syncing...');
+  if(!USING_SHEETS){setStatus(false,'No URL');return;}
+  setStatus(null,'Loading...');
   try {
-    const res=await fetch(SCRIPT_URL+'?action=getAll');
-    const data=await res.json();
+    const url=SCRIPT_URL+'?action=getAll&t='+Date.now();
+    const res=await fetch(url);
+    const text=await res.text();
+    setStatus(null,'Got response, parsing...');
+    const data=JSON.parse(text);
     if(data&&data.events!==undefined){
       events=data.events||[];
       devotees=data.devotees||[];
       notices=data.notices||[];
       if(data.adminPin)ADMIN_PIN=String(data.adminPin);
-      setStatus(true,'Synced');
+      setStatus(true,'Synced ✓ '+events.length+' events, '+devotees.length+' devotees');
     } else {
-      setStatus(false,'Sync failed');
+      setStatus(false,'Bad data: '+text.substring(0,50));
     }
   } catch(e){
-    console.log('loadFromSheets error',e);
-    setStatus(false,'Sync failed');
+    setStatus(false,'Error: '+e.message);
   }
   renderHome();renderCalendar();renderDevotees('');
 }
