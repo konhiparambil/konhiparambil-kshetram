@@ -137,7 +137,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text
 <body>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_Z6FQqejBo6KGfBM4NNWch52ns9sbQzm4EvAae5bKfHM4kyKktBzkXsfsA4iMDgla/exec';
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
 const USING_SHEETS = SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE';
 </script>
 
@@ -178,33 +178,32 @@ const USING_SHEETS = SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE';
     </div>
   </div>
 
-  <!-- Malayalam date + sun times (compact, below fold) -->
+  <!-- Today section: Malayalam date + sun + weather all together -->
   <div class="section-label" style="margin-top:14px">Today</div>
-  <div id="mal-date-card" style="background:var(--crimson-light);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:8px">
+  <div id="mal-date-card" style="background:var(--crimson-light);border:0.5px solid var(--border);border-radius:var(--radius-sm) var(--radius-sm) 0 0;padding:10px 12px;margin-bottom:0;border-bottom:none">
     <div style="font-size:11px;color:var(--text-soft)">Loading...</div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px">
-    <div class="info-tile" style="padding:7px 4px">
-      <div class="info-tile-icon" style="font-size:16px">🌅</div>
-      <div class="info-tile-val" id="sunrise-val" style="font-size:13px">–</div>
-      <div class="info-tile-lbl">Sunrise</div>
+  <div style="background:var(--surface2);border:0.5px solid var(--border);border-top:none;border-bottom:none;padding:8px 10px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="font-size:18px">🌅</span>
+      <div>
+        <div id="sunrise-val" style="font-size:13px;font-weight:500;color:var(--text)">–</div>
+        <div style="font-size:10px;color:var(--text-soft)">Sunrise · Thrissur</div>
+      </div>
     </div>
-    <div class="info-tile" style="padding:7px 4px">
-      <div class="info-tile-icon" style="font-size:16px">🌇</div>
-      <div class="info-tile-val" id="sunset-val" style="font-size:13px">–</div>
-      <div class="info-tile-lbl">Sunset</div>
-    </div>
-    <div class="info-tile" style="padding:7px 4px;grid-column:span 2">
-      <div class="info-tile-icon" style="font-size:16px">📍</div>
-      <div class="info-tile-val" style="font-size:12px">Thrissur</div>
-      <div class="info-tile-lbl">times above</div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="font-size:18px">🌇</span>
+      <div>
+        <div id="sunset-val" style="font-size:13px;font-weight:500;color:var(--text)">–</div>
+        <div style="font-size:10px;color:var(--text-soft)">Sunset · Thrissur</div>
+      </div>
     </div>
   </div>
-
-  <!-- Weather compact -->
-  <div class="section-label">Weather · Choolissery</div>
-  <div class="weather-row" id="weather-row">
-    <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">–</div><div class="weather-day-temp">–</div></div>
+  <div style="background:var(--surface2);border:0.5px solid var(--border);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:8px 10px">
+    <div style="font-size:10px;color:var(--text-soft);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em">Weather · Choolissery</div>
+    <div class="weather-row" id="weather-row" style="margin-bottom:0">
+      <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">–</div><div class="weather-day-temp">–</div></div>
+    </div>
   </div>
 </div>
 
@@ -523,7 +522,7 @@ async function loadSunTimes() {
 async function loadWeather() {
   try {
     // Choolissery coordinates: approx 10.7167° N, 76.0667° E
-    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=10.7167&longitude=76.0667&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FKolkata&forecast_days=5');
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=10.7167&longitude=76.0667&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FKolkata&forecast_days=5&format=json');
     const data = await res.json();
     const days = data.daily;
     let html = '';
