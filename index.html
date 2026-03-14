@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>കോഞ്ഞിപ്പറമ്പിൽ കുടുംബ ക്ഷേത്രം</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;600&family=Noto+Sans+Malayalam:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --saffron:#E8650A;--saffron-light:#FDF0E6;
+  --crimson:#8B1A1A;--crimson-light:#F9EDED;
+  --gold:#B8860B;--gold-light:#FBF6E6;
+  --green:#1A6B3C;--green-light:#EBF5F0;
+  --blue:#1A4A8B;--blue-light:#EBF0F9;
+  --purple:#4A1A8B;--purple-light:#F0EBF9;
+  --text:#2C1810;--text-mid:#6B4C3B;--text-soft:#9A7B6E;
+  --surface:#FFFDF9;--surface2:#FBF6EE;--border:#E8D9C8;
+  --radius:12px;--radius-sm:8px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto}
+.ml{font-family:'Noto Serif Malayalam','Noto Sans Malayalam',serif}
+.header{background:var(--crimson);padding:16px 16px 12px;text-align:center;position:relative}
+.header-deco{position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--saffron),var(--gold))}
+.temple-name-ml{font-family:'Noto Serif Malayalam',serif;font-size:18px;color:#FFF8E7;line-height:1.4;font-weight:600}
+.temple-name-en{font-family:'Crimson Pro',serif;font-size:12px;color:#D4A87A;letter-spacing:0.08em;margin-top:2px;font-style:italic}
+.nav{display:flex;background:var(--surface2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.nav-btn{flex:1;padding:9px 2px 7px;font-size:10px;border:none;background:none;cursor:pointer;color:var(--text-soft);font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent}
+.nav-btn.active{color:var(--crimson);border-bottom-color:var(--crimson);font-weight:500}
+.nav-icon{display:block;font-size:16px;margin-bottom:1px}
+.page{display:none;padding:12px;animation:fadeIn 0.25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:10px}
+.section-label{font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-soft);margin:12px 0 6px;font-weight:500}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.badge-saffron{background:var(--saffron-light);color:var(--saffron)}
+.badge-green{background:var(--green-light);color:var(--green)}
+.badge-crimson{background:var(--crimson-light);color:var(--crimson)}
+.badge-gold{background:var(--gold-light);color:var(--gold)}
+.badge-blue{background:var(--blue-light);color:var(--blue)}
+.badge-purple{background:var(--purple-light);color:var(--purple)}
+
+/* Sun/Weather grid */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.info-tile{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 10px;text-align:center}
+.info-tile-icon{font-size:20px;margin-bottom:4px}
+.info-tile-val{font-size:16px;font-weight:500;color:var(--text);line-height:1.2}
+.info-tile-lbl{font-size:10px;color:var(--text-soft);margin-top:2px}
+.weather-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px}
+.weather-day{flex-shrink:0;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;text-align:center;min-width:64px}
+.weather-day-name{font-size:10px;color:var(--text-soft);margin-bottom:4px}
+.weather-day-icon{font-size:18px;margin-bottom:3px}
+.weather-day-temp{font-size:12px;font-weight:500}
+.weather-day-rain{font-size:10px;color:var(--blue);margin-top:2px}
+
+/* Malayalam date card */
+.mal-date-card{background:linear-gradient(135deg,var(--crimson) 0%,#6B1212 100%);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;color:#FFF8E7}
+.mal-date-main{font-family:'Noto Serif Malayalam',serif;font-size:22px;font-weight:600;line-height:1.3}
+.mal-date-sub{font-size:12px;color:#D4A87A;margin-top:4px}
+.mal-date-naal{font-family:'Noto Serif Malayalam',serif;font-size:14px;color:#FAD9A0;margin-top:6px}
+
+/* Broadcast banner */
+.broadcast-banner{background:var(--surface);border:1.5px solid var(--saffron);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:10px;position:relative}
+.broadcast-type-birth{border-color:var(--green)}
+.broadcast-type-death{border-color:#888;background:#F9F9F9}
+.broadcast-type-urgent{border-color:var(--crimson);background:var(--crimson-light)}
+.broadcast-date{font-size:10px;color:var(--text-soft);margin-bottom:3px}
+.broadcast-msg{font-size:13px;color:var(--text);line-height:1.5}
+.broadcast-share{position:absolute;right:10px;top:10px;background:#25D366;color:#fff;border:none;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* Events */
+.event-item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid var(--border)}
+.event-item:last-child{border-bottom:none}
+.event-item.past{opacity:0.45}
+.event-date-box{min-width:38px;text-align:center;background:var(--saffron-light);border-radius:var(--radius-sm);padding:5px 3px;flex-shrink:0}
+.event-date-day{font-size:16px;font-weight:600;color:var(--saffron);line-height:1}
+.event-date-mon{font-size:9px;color:var(--saffron);text-transform:uppercase}
+.past-divider{text-align:center;font-size:11px;color:var(--text-soft);margin:8px 0;padding:5px 0;border-top:0.5px dashed var(--border);border-bottom:0.5px dashed var(--border);background:var(--surface2);border-radius:4px;cursor:pointer}
+
+/* Devotees */
+.devotee-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.devotee-item:last-child{border-bottom:none}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--crimson-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--crimson);flex-shrink:0}
+.bday-soon{background:var(--gold-light);border-radius:4px;font-size:10px;color:var(--gold);padding:1px 5px;margin-left:4px}
+
+/* Forms */
+.form-group{margin-bottom:11px}
+.form-label{font-size:12px;color:var(--text-soft);margin-bottom:4px;display:block;font-weight:500}
+.form-input{width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;-webkit-appearance:none}
+.form-input:focus{border-color:var(--crimson)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.btn{width:100%;padding:11px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:4px}
+.btn-primary{background:var(--crimson);color:#fff}
+.btn-secondary{background:var(--surface2);color:var(--text);border:0.5px solid var(--border)}
+.btn-sm{padding:6px 12px;font-size:12px;width:auto;margin-top:0;border-radius:6px}
+.btn-danger{background:var(--crimson-light);color:var(--crimson);border:none}
+.btn-wa{background:#25D366;color:#fff;border:none}
+
+/* PIN */
+.pin-screen{text-align:center;padding:18px 16px}
+.pin-dots{display:flex;justify-content:center;gap:11px;margin-bottom:18px}
+.pin-dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:all 0.2s}
+.pin-dot.filled{background:var(--crimson);border-color:var(--crimson)}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:220px;margin:0 auto}
+.pin-key{padding:14px;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:17px;font-weight:500;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif}
+.pin-key:active{background:var(--crimson-light)}
+.pin-error{color:#C0392B;font-size:12px;margin-top:8px;min-height:16px}
+.admin-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.admin-tab{padding:6px 12px;border-radius:20px;font-size:12px;cursor:pointer;border:0.5px solid var(--border);background:var(--surface2);color:var(--text-mid);white-space:nowrap;font-family:'DM Sans',sans-serif}
+.admin-tab.active{background:var(--crimson);color:#fff;border-color:var(--crimson)}
+.manage-row{padding:9px 0;border-bottom:0.5px solid var(--border)}
+.manage-row:last-child{border-bottom:none}
+.manage-row-top{display:flex;justify-content:space-between;align-items:center}
+.manage-row-actions{display:flex;gap:5px}
+.edit-form{margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border);display:none}
+.edit-form.open{display:block}
+
+/* PIN display box for admin */
+.pin-box{background:var(--gold-light);border:1px dashed var(--gold);border-radius:8px;padding:8px 12px;margin-top:8px;text-align:center}
+.pin-box-val{font-size:24px;font-weight:500;letter-spacing:6px;color:var(--gold)}
+.pin-box-lbl{font-size:11px;color:var(--text-soft);margin-top:2px}
+
+.overlay{display:none;position:fixed;inset:0;background:rgba(44,24,16,0.55);z-index:100;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:18px 18px 0 0;padding:18px 16px 30px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:500;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{font-size:22px;cursor:pointer;color:var(--text-soft);background:none;border:none;padding:2px}
+
+.toast{position:fixed;bottom:65px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--green);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:200;white-space:nowrap;max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:24px 16px;color:var(--text-soft);font-size:14px}
+</style>
+</head>
+<body>
+
+<script>
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const USING_SHEETS = SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE';
+</script>
+
+<div class="header">
+  <div class="header-deco"></div>
+  <div style="font-size:20px;margin-bottom:4px">🪔</div>
+  <div class="temple-name-ml ml">കോഞ്ഞിപ്പറമ്പിൽ കുടുംബ ക്ഷേത്രം</div>
+  <div class="temple-name-en">Konhiparambil Kudumba Kshetram</div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>Home</button>
+  <button class="nav-btn" onclick="showPage('calendar',this)"><span class="nav-icon">📅</span>Events</button>
+  <button class="nav-btn" onclick="showPage('devotees',this)"><span class="nav-icon">👥</span>Devotees</button>
+  <button class="nav-btn" onclick="showPage('notices',this)"><span class="nav-icon">📢</span>Notices</button>
+  <button class="nav-btn" onclick="showPage('admin',this)"><span class="nav-icon">🔐</span>Admin</button>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+
+  <!-- Latest notice — top priority -->
+  <div id="home-notice-section"></div>
+
+  <!-- Upcoming events -->
+  <div class="section-label">Upcoming events</div>
+  <div id="home-upcoming"></div>
+
+  <!-- Self edit shortcut -->
+  <div class="card" style="cursor:pointer;margin-top:4px" onclick="openDevoteeLogin()">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="font-size:20px">✏️</div>
+      <div>
+        <div style="font-size:13px;font-weight:500">Update my details</div>
+        <div style="font-size:11px;color:var(--text-soft)">Devotees: edit your own info</div>
+      </div>
+      <div style="margin-left:auto;color:var(--text-soft);font-size:18px">›</div>
+    </div>
+  </div>
+
+  <!-- Malayalam date + sun times (compact, below fold) -->
+  <div class="section-label" style="margin-top:14px">Today</div>
+  <div id="mal-date-card" style="background:var(--crimson-light);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:8px">
+    <div style="font-size:11px;color:var(--text-soft)">Loading...</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px">
+    <div class="info-tile" style="padding:7px 4px">
+      <div class="info-tile-icon" style="font-size:16px">🌅</div>
+      <div class="info-tile-val" id="sunrise-val" style="font-size:13px">–</div>
+      <div class="info-tile-lbl">Sunrise</div>
+    </div>
+    <div class="info-tile" style="padding:7px 4px">
+      <div class="info-tile-icon" style="font-size:16px">🌇</div>
+      <div class="info-tile-val" id="sunset-val" style="font-size:13px">–</div>
+      <div class="info-tile-lbl">Sunset</div>
+    </div>
+    <div class="info-tile" style="padding:7px 4px;grid-column:span 2">
+      <div class="info-tile-icon" style="font-size:16px">📍</div>
+      <div class="info-tile-val" style="font-size:12px">Thrissur</div>
+      <div class="info-tile-lbl">times above</div>
+    </div>
+  </div>
+
+  <!-- Weather compact -->
+  <div class="section-label">Weather · Choolissery</div>
+  <div class="weather-row" id="weather-row">
+    <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">–</div><div class="weather-day-temp">–</div></div>
+  </div>
+</div>
+
+<!-- CALENDAR -->
+<div id="page-calendar" class="page">
+  <div class="card" style="padding:11px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+      <button style="border:none;background:none;cursor:pointer;font-size:20px;color:var(--text-mid);padding:3px 7px" onclick="changeMonth(-1)">‹</button>
+      <div style="text-align:center">
+        <div style="font-size:14px;font-weight:500" id="month-title-ml"></div>
+        <div style="font-size:11px;color:var(--text-soft)" id="month-title-en"></div>
+      </div>
+      <button style="border:none;background:none;cursor:pointer;font-size:20px;color:var(--text-mid);padding:3px 7px" onclick="changeMonth(1)">›</button>
+    </div>
+    <div id="event-list"></div>
+    <div id="event-empty" class="empty-state" style="display:none">
+      <div style="font-size:28px;margin-bottom:5px">🪔</div>
+      <div class="ml" style="font-size:13px">ഈ മാസം ഒരു പരിപാടിയും ഇല്ല</div>
+      <div style="font-size:11px;margin-top:2px">No events this month</div>
+    </div>
+  </div>
+</div>
+
+<!-- DEVOTEES -->
+<div id="page-devotees" class="page">
+  <input type="text" class="form-input" placeholder="🔍  Search name or place..." oninput="searchDevotees(this.value)" style="margin-bottom:9px">
+  <div class="card" style="padding:9px">
+    <div id="devotee-list"></div>
+    <div id="devotee-empty" class="empty-state" style="display:none"><div style="font-size:28px;margin-bottom:5px">👤</div><div>No devotees found</div></div>
+  </div>
+</div>
+
+<!-- NOTICES -->
+<div id="page-notices" class="page">
+  <div class="section-label">Announcements</div>
+  <div id="notices-list"></div>
+  <div id="notices-empty" class="empty-state" style="display:none"><div style="font-size:28px;margin-bottom:5px">📢</div><div>No announcements yet</div></div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div id="pin-screen" class="pin-screen">
+    <div style="font-size:28px;margin-bottom:6px">🔐</div>
+    <div style="font-size:14px;font-weight:500;margin-bottom:2px">Admin access</div>
+    <div style="font-size:12px;color:var(--text-soft);margin-bottom:14px">PIN നൽകുക · Enter 4-digit PIN</div>
+    <div class="pin-dots" id="admin-pin-dots">
+      <div class="pin-dot" id="ad0"></div><div class="pin-dot" id="ad1"></div>
+      <div class="pin-dot" id="ad2"></div><div class="pin-dot" id="ad3"></div>
+    </div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinPress('admin','1')">1</button><button class="pin-key" onclick="pinPress('admin','2')">2</button><button class="pin-key" onclick="pinPress('admin','3')">3</button>
+      <button class="pin-key" onclick="pinPress('admin','4')">4</button><button class="pin-key" onclick="pinPress('admin','5')">5</button><button class="pin-key" onclick="pinPress('admin','6')">6</button>
+      <button class="pin-key" onclick="pinPress('admin','7')">7</button><button class="pin-key" onclick="pinPress('admin','8')">8</button><button class="pin-key" onclick="pinPress('admin','9')">9</button>
+      <button class="pin-key" onclick="pinPress('admin','0')" style="grid-column:2">0</button>
+      <button class="pin-key" onclick="pinDel('admin')" style="font-size:13px;color:var(--text-soft)">⌫</button>
+    </div>
+    <div class="pin-error" id="admin-pin-error"></div>
+    <div style="margin-top:14px;font-size:11px;color:var(--text-soft)">Default PIN: <strong>1108</strong></div>
+  </div>
+
+  <div id="admin-panel" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+      <div style="font-size:14px;font-weight:500">⚙️ Admin panel</div>
+      <button onclick="lockAdmin()" style="font-size:11px;color:var(--text-soft);border:0.5px solid var(--border);background:none;padding:5px 9px;border-radius:20px;cursor:pointer">Lock</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="adminTab('add-event',this)">+ Event</button>
+      <button class="admin-tab" onclick="adminTab('add-devotee',this)">+ Devotee</button>
+      <button class="admin-tab" onclick="adminTab('broadcast',this)">📢 Broadcast</button>
+      <button class="admin-tab" onclick="adminTab('manage-events',this)">Edit events</button>
+      <button class="admin-tab" onclick="adminTab('manage-devotees',this)">Edit devotees</button>
+      <button class="admin-tab" onclick="adminTab('settings',this)">Settings</button>
+    </div>
+
+    <!-- Add Event -->
+    <div id="atab-add-event">
+      <div class="card">
+        <div class="form-group"><label class="form-label">Event name (Malayalam)</label><input class="form-input ml" id="ev-name-ml" placeholder="ഉദാ: വിഷു"></div>
+        <div class="form-group"><label class="form-label">Event name (English)</label><input class="form-input" id="ev-name-en" placeholder="e.g. Vishu"></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="ev-date" type="date"></div>
+          <div class="form-group"><label class="form-label">Time</label><input class="form-input" id="ev-time" type="time"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Type</label>
+          <select class="form-input" id="ev-type">
+            <option value="festival">Festival / ഉത്സവം</option>
+            <option value="puja">Puja / പൂജ</option>
+            <option value="vratham">Vratham / വ്രതം</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="addEvent(this)">Add event</button>
+      </div>
+    </div>
+
+    <!-- Add Devotee -->
+    <div id="atab-add-devotee" style="display:none">
+      <div class="card">
+        <div class="form-group"><label class="form-label">Full name</label><input class="form-input" id="dev-name" placeholder="e.g. Rajan Nair"></div>
+        <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="dev-phone" type="tel" placeholder="+91 98765 43210"></div>
+        <div class="form-group"><label class="form-label">Place / village</label><input class="form-input" id="dev-place" placeholder="e.g. Thrissur"></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Birthday</label><input class="form-input" id="dev-bday" type="date"></div>
+          <div class="form-group"><label class="form-label">Nakshatra</label>
+            <select class="form-input" id="dev-star"><option value="">Select</option>
+              <option>Aswathi</option><option>Bharani</option><option>Karthika</option><option>Rohini</option><option>Makayiram</option><option>Thiruvathira</option><option>Punartham</option><option>Pooyam</option><option>Ayilyam</option><option>Makam</option><option>Pooram</option><option>Uthram</option><option>Atham</option><option>Chithira</option><option>Chothi</option><option>Vishakham</option><option>Anizham</option><option>Thrikketta</option><option>Moolam</option><option>Pooradam</option><option>Uthradam</option><option>Thiruvonam</option><option>Avittam</option><option>Chathayam</option><option>Pooruruttathi</option><option>Uthrattathi</option><option>Revathi</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Notes (optional)</label><input class="form-input" id="dev-note" placeholder="Role, family, etc."></div>
+        <div class="form-group">
+          <label class="form-label">Personal PIN — generate or set manually</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input class="form-input" id="dev-pin" type="number" placeholder="4 digits" style="flex:1">
+            <button class="btn btn-secondary btn-sm" onclick="generatePin()" style="flex-shrink:0">Generate</button>
+          </div>
+          <div id="new-pin-display" style="display:none" class="pin-box">
+            <div class="pin-box-val" id="new-pin-val"></div>
+            <div class="pin-box-lbl">Share this PIN privately with the devotee</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addDevotee(this)">Add devotee</button>
+      </div>
+    </div>
+
+    <!-- Broadcast -->
+    <div id="atab-broadcast" style="display:none">
+      <div class="card">
+        <div class="form-group"><label class="form-label">Type</label>
+          <select class="form-input" id="bc-type">
+            <option value="event">📅 Event / announcement</option>
+            <option value="birth">🎉 New birth</option>
+            <option value="death">🕯️ Passing away</option>
+            <option value="urgent">🔔 Urgent notice</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Message (English)</label>
+          <textarea class="form-input" id="bc-msg" rows="3" placeholder="e.g. Special puja today at 6 PM. All are invited." style="resize:none"></textarea>
+        </div>
+        <div class="form-group"><label class="form-label">Message (Malayalam, optional)</label>
+          <textarea class="form-input ml" id="bc-msg-ml" rows="2" placeholder="ഉദാ: ഇന്ന് വൈകിട്ട് 6 മണിക്ക് പൂജ" style="resize:none"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="sendBroadcast(this)" style="margin-bottom:8px">Post to app</button>
+        <button class="btn btn-wa" onclick="shareWhatsApp()" id="wa-btn" style="display:none">📱 Share on WhatsApp</button>
+      </div>
+      <div class="section-label">Previous notices</div>
+      <div id="admin-notices-list"></div>
+    </div>
+
+    <!-- Manage Events -->
+    <div id="atab-manage-events" style="display:none">
+      <div class="card" style="padding:9px" id="manage-events-list"></div>
+    </div>
+
+    <!-- Manage Devotees -->
+    <div id="atab-manage-devotees" style="display:none">
+      <div class="card" style="padding:9px" id="manage-devotees-list"></div>
+    </div>
+
+    <!-- Settings -->
+    <div id="atab-settings" style="display:none">
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:10px">Change admin PIN</div>
+        <div class="form-group"><label class="form-label">Current PIN</label><input class="form-input" id="cur-pin" type="password" maxlength="4" placeholder="Current PIN"></div>
+        <div class="form-group"><label class="form-label">New PIN</label><input class="form-input" id="new-pin" type="number" maxlength="4" placeholder="4 digits"></div>
+        <div class="form-group"><label class="form-label">Confirm new PIN</label><input class="form-input" id="new-pin2" type="number" maxlength="4" placeholder="4 digits"></div>
+        <button class="btn btn-primary" onclick="changeAdminPin()">Update PIN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Devotee self-edit overlay -->
+<div class="overlay" id="devotee-overlay">
+  <div class="modal">
+    <div id="dev-login-step">
+      <div class="modal-title"><span>Update my details</span><button class="modal-close" onclick="closeOverlay('devotee-overlay')">×</button></div>
+      <div style="font-size:12px;color:var(--text-soft);margin-bottom:12px">Enter your personal 4-digit PIN given by admin</div>
+      <div class="pin-dots" id="dev-login-dots">
+        <div class="pin-dot" id="dl0"></div><div class="pin-dot" id="dl1"></div><div class="pin-dot" id="dl2"></div><div class="pin-dot" id="dl3"></div>
+      </div>
+      <div class="pin-keypad">
+        <button class="pin-key" onclick="pinPress('devlogin','1')">1</button><button class="pin-key" onclick="pinPress('devlogin','2')">2</button><button class="pin-key" onclick="pinPress('devlogin','3')">3</button>
+        <button class="pin-key" onclick="pinPress('devlogin','4')">4</button><button class="pin-key" onclick="pinPress('devlogin','5')">5</button><button class="pin-key" onclick="pinPress('devlogin','6')">6</button>
+        <button class="pin-key" onclick="pinPress('devlogin','7')">7</button><button class="pin-key" onclick="pinPress('devlogin','8')">8</button><button class="pin-key" onclick="pinPress('devlogin','9')">9</button>
+        <button class="pin-key" onclick="pinPress('devlogin','0')" style="grid-column:2">0</button>
+        <button class="pin-key" onclick="pinDel('devlogin')" style="font-size:13px;color:var(--text-soft)">⌫</button>
+      </div>
+      <div class="pin-error" id="dev-login-error"></div>
+    </div>
+    <div id="dev-edit-step" style="display:none">
+      <div class="modal-title"><span>Edit my details</span><button class="modal-close" onclick="closeOverlay('devotee-overlay')">×</button></div>
+      <div class="form-group"><label class="form-label">Full name</label><input class="form-input" id="self-name"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="self-phone" type="tel"></div>
+      <div class="form-group"><label class="form-label">Place / village</label><input class="form-input" id="self-place"></div>
+      <div class="form-group"><label class="form-label">Birthday</label><input class="form-input" id="self-bday" type="date"></div>
+      <div class="form-group"><label class="form-label">Nakshatra</label>
+        <select class="form-input" id="self-star"><option value="">Select</option>
+          <option>Aswathi</option><option>Bharani</option><option>Karthika</option><option>Rohini</option><option>Makayiram</option><option>Thiruvathira</option><option>Punartham</option><option>Pooyam</option><option>Ayilyam</option><option>Makam</option><option>Pooram</option><option>Uthram</option><option>Atham</option><option>Chithira</option><option>Chothi</option><option>Vishakham</option><option>Anizham</option><option>Thrikketta</option><option>Moolam</option><option>Pooradam</option><option>Uthradam</option><option>Thiruvonam</option><option>Avittam</option><option>Chathayam</option><option>Pooruruttathi</option><option>Uthrattathi</option><option>Revathi</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="saveSelfEdit(this)">Save changes</button>
+      <button class="btn btn-secondary" onclick="closeOverlay('devotee-overlay')" style="margin-top:6px">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══ CONFIG ═══ */
+let ADMIN_PIN = '1108';
+let adminUnlocked = false;
+let pinBuffers = {admin:'', devlogin:''};
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let selfEditDevoteeId = null;
+let showPastEvents = false;
+let lastBroadcast = null;
+
+const MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_ML = ['ജനുവരി','ഫെബ്രുവരി','മാർച്ച്','ഏപ്രിൽ','മേയ്','ജൂൺ','ജൂലൈ','ഓഗസ്റ്റ്','സെപ്റ്റംബർ','ഒക്ടോബർ','നവംബർ','ഡിസംബർ'];
+const TYPE_BADGE = {festival:'badge-saffron',puja:'badge-crimson',vratham:'badge-gold',other:'badge-green'};
+
+const WEATHER_ICONS = {0:'☀️',1:'☀️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'🌨️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+
+/* ═══ SAMPLE DATA ═══ */
+let events = [
+  {id:'e1',nameML:'വിഷു',nameEN:'Vishu',date:'2026-04-14',time:'06:00',type:'festival'},
+  {id:'e2',nameML:'ഉത്സവം',nameEN:'Temple Utsavam',date:'2026-03-25',time:'08:00',type:'festival'},
+  {id:'e3',nameML:'തൃക്കാർത്തിക',nameEN:'Thrikkarthika',date:'2026-11-15',time:'18:00',type:'puja'},
+];
+let devotees = [
+  {id:'d1',name:'Rajan Nambiar',phone:'+91 94470 12345',place:'Thrissur',star:'Rohini',note:'Trustee',pin:'1234',bday:'1968-05-12'},
+  {id:'d2',name:'Sujatha Menon',phone:'+91 98470 56789',place:'Palakkad',star:'Aswathi',note:'',pin:'2345',bday:'1975-03-20'},
+  {id:'d3',name:'Krishnadas K',phone:'+91 90725 11223',place:'Kozhikode',star:'Thiruvonam',note:'Priest family',pin:'3456',bday:''},
+];
+let notices = [];
+
+/* ═══ MALAYALAM DATE ═══ */
+const MAL_MONTHS = ['മേടം','ഇടവം','മിഥുനം','കർക്കടകം','ചിങ്ങം','കന്നി','തുലാം','വൃശ്ചികം','ധനു','മകരം','കുംഭം','മീനം'];
+const MAL_DAYS = ['ഞായർ','തിങ്കൾ','ചൊവ്വ','ബുധൻ','വ്യാഴം','വെള്ളി','ശനി'];
+const MAL_NAALU = ['ആദിത്യൻ','ചന്ദ്രൻ','ഭൗമൻ','ബുധൻ','വ്യാഴം','ശുക്രൻ','ശനി'];
+const NAKSHATRAS_ML = ['അശ്വതി','ഭരണി','കാർത്തിക','രോഹിണി','മകയിരം','തിരുവാതിര','പുണർതം','പൂയം','ആയില്യം','മകം','പൂരം','ഉത്രം','അത്തം','ചിത്തിര','ചോതി','വിശാഖം','അനിഴം','തൃക്കേട്ട','മൂലം','പൂരാടം','ഉത്രാടം','തിരുവോണം','അവിട്ടം','ചതയം','പൂരുരുട്ടാതി','ഉത്രട്ടാതി','രേവതി'];
+
+function getMalayalamDate(jsDate) {
+  // Approximate Malayalam calendar (Kolla Varsham) calculation
+  const year = jsDate.getFullYear();
+  const month = jsDate.getMonth();
+  const day = jsDate.getDate();
+  // Malayalam month starts around 14th-15th of each Gregorian month
+  // Chingam (Aug-Sep), Kanni (Sep-Oct), etc.
+  // Gregorian month index to Malayalam: starts from Medam (Apr-May)
+  const gmToMal = [10,11,0,1,2,3,4,5,6,7,8,9]; // Jan=10(Kumbham), Apr=0(Medam)
+  let malMonthIdx = gmToMal[month];
+  let malDay = day - 14;
+  if (malDay <= 0) {
+    malMonthIdx = (malMonthIdx - 1 + 12) % 12;
+    malDay = 28 + malDay; // approximate
+  }
+  malDay = Math.max(1, Math.min(30, malDay));
+  // Kolla Varsham year
+  const kollaYear = (month >= 8 || (month === 7 && day >= 17)) ? (year - 824) : (year - 825);
+  return {
+    day: malDay,
+    monthName: MAL_MONTHS[malMonthIdx],
+    year: kollaYear,
+    weekday: MAL_DAYS[jsDate.getDay()],
+    naal: MAL_NAALU[jsDate.getDay()]
+  };
+}
+
+function getNakshatraOfDay() {
+  // Approximate: rotate through 27 nakshatras based on day of year
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const dayOfYear = Math.floor((now - start) / 86400000);
+  return NAKSHATRAS_ML[dayOfYear % 27];
+}
+
+function renderMalDate() {
+  const today = new Date();
+  const md = getMalayalamDate(today);
+  const nakshatra = getNakshatraOfDay();
+  document.getElementById('mal-date-card').innerHTML = `
+    <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+      <span class="ml" style="font-size:16px;font-weight:600;color:var(--crimson)">${md.day} ${md.monthName} ${md.year}</span>
+      <span style="font-size:11px;color:var(--text-soft)">${md.weekday}</span>
+    </div>
+    <div style="font-size:11px;color:var(--text-mid);margin-top:4px">
+      <span class="ml">നക്ഷത്രം: ${nakshatra}</span>&nbsp;·&nbsp;<span class="ml">നാൾ: ${md.naal}</span>
+    </div>
+    <div style="font-size:11px;color:var(--text-soft);margin-top:2px">${today.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</div>
+  `;
+}
+
+/* ═══ SUNRISE/SUNSET ═══ */
+async function loadSunTimes() {
+  try {
+    // Thrissur coordinates: 10.5276° N, 76.2144° E
+    const res = await fetch('https://api.sunrise-sunset.org/json?lat=10.5276&lng=76.2144&formatted=0');
+    const data = await res.json();
+    if (data.status === 'OK') {
+      const sr = new Date(data.results.sunrise);
+      const ss = new Date(data.results.sunset);
+      document.getElementById('sunrise-val').textContent = sr.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+      document.getElementById('sunset-val').textContent = ss.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+    }
+  } catch(e) {
+    document.getElementById('sunrise-val').textContent = '5:58 AM';
+    document.getElementById('sunset-val').textContent = '6:26 PM';
+  }
+}
+
+/* ═══ WEATHER ═══ */
+async function loadWeather() {
+  try {
+    // Choolissery coordinates: approx 10.7167° N, 76.0667° E
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=10.7167&longitude=76.0667&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FKolkata&forecast_days=5');
+    const data = await res.json();
+    const days = data.daily;
+    let html = '';
+    for (let i = 0; i < 5; i++) {
+      const date = new Date(days.time[i]+'T00:00:00');
+      const dayName = i===0?'Today':i===1?'Tmrw':date.toLocaleDateString('en-IN',{weekday:'short'});
+      const icon = WEATHER_ICONS[days.weathercode[i]] || '🌤️';
+      const tmax = Math.round(days.temperature_2m_max[i]);
+      const tmin = Math.round(days.temperature_2m_min[i]);
+      const rain = days.precipitation_probability_max[i];
+      html += `<div class="weather-day">
+        <div class="weather-day-name">${dayName}</div>
+        <div class="weather-day-icon">${icon}</div>
+        <div class="weather-day-temp">${tmax}°/${tmin}°</div>
+        <div class="weather-day-rain">${rain}% 🌧️</div>
+      </div>`;
+    }
+    document.getElementById('weather-row').innerHTML = html;
+  } catch(e) {
+    document.getElementById('weather-row').innerHTML = '<div style="font-size:12px;color:var(--text-soft);padding:8px">Weather unavailable</div>';
+  }
+}
+
+/* ═══ NAVIGATION ═══ */
+function showPage(p, btn) {
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  btn.classList.add('active');
+  if(p==='calendar') renderCalendar();
+  if(p==='devotees') renderDevotees('');
+  if(p==='home') renderHome();
+  if(p==='notices') renderNoticesPage();
+  if(p==='admin' && adminUnlocked){document.getElementById('pin-screen').style.display='none';document.getElementById('admin-panel').style.display='block';}
+}
+
+/* ═══ HOME ═══ */
+function renderHome() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const upcoming = events.filter(e=>new Date(e.date+'T00:00:00')>=today)
+    .sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,3);
+  const el = document.getElementById('home-upcoming');
+  el.innerHTML = upcoming.length ? upcoming.map(e=>eventCardHTML(e)).join('') :
+    '<div style="font-size:13px;color:var(--text-soft);padding:8px 0">No upcoming events</div>';
+
+  // Latest notice on home
+  const noticeEl = document.getElementById('home-notice-section');
+  if (notices.length) {
+    const n = notices[0];
+    noticeEl.innerHTML = `<div class="section-label">Latest notice</div>${noticeBannerHTML(n, false)}`;
+  } else noticeEl.innerHTML = '';
+
+  // Birthday alerts
+  checkBirthdays();
+}
+
+function checkBirthdays() {
+  const today = new Date();
+  const mm = today.getMonth()+1, dd = today.getDate();
+  const soon = devotees.filter(d=>{
+    if(!d.bday) return false;
+    const [,bm,bd] = d.bday.split('-').map(Number);
+    const diff = (new Date(today.getFullYear(),bm-1,bd) - today)/(1000*60*60*24);
+    return diff >= 0 && diff <= 7;
+  });
+  if(soon.length) {
+    const existing = document.getElementById('bday-alert');
+    if(existing) existing.remove();
+    const alert = document.createElement('div');
+    alert.id='bday-alert';
+    alert.className='card';
+    alert.style.borderColor='var(--gold)';
+    alert.style.background='var(--gold-light)';
+    alert.innerHTML = `<div style="font-size:12px;font-weight:500;color:var(--gold);margin-bottom:6px">🎂 Upcoming birthdays</div>` +
+      soon.map(d=>{
+        const [,bm,bd]=d.bday.split('-').map(Number);
+        const bdate=new Date(today.getFullYear(),bm-1,bd);
+        const diff=Math.round((bdate-today)/(1000*60*60*24));
+        return `<div style="font-size:13px;color:var(--text);padding:2px 0">${d.name} — ${diff===0?'Today! 🎉':diff===1?'Tomorrow':MONTHS_EN[bm-1]+' '+bd}</div>`;
+      }).join('');
+    document.getElementById('home-upcoming').before(alert);
+  }
+}
+
+function eventCardHTML(e) {
+  const d = new Date(e.date+'T00:00:00');
+  return `<div class="card" style="padding:9px 11px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="event-date-box"><div class="event-date-day">${d.getDate()}</div><div class="event-date-mon">${MONTHS_EN[d.getMonth()].substring(0,3)}</div></div>
+      <div>
+        <div class="ml" style="font-size:13px">${e.nameML}</div>
+        <div style="font-size:12px;color:var(--text-soft)">${e.nameEN}</div>
+        <div style="font-size:11px;color:var(--text-soft);margin-top:2px">${formatTime(e.time)}&nbsp;<span class="badge ${TYPE_BADGE[e.type]||'badge-gold'}">${e.type}</span></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══ CALENDAR ═══ */
+function renderCalendar() {
+  document.getElementById('month-title-ml').textContent = MONTHS_ML[currentMonth];
+  document.getElementById('month-title-en').textContent = MONTHS_EN[currentMonth]+' '+currentYear;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const allMonth=events.filter(e=>{const d=new Date(e.date+'T00:00:00');return d.getMonth()===currentMonth&&d.getFullYear()===currentYear;}).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const upcoming=allMonth.filter(e=>new Date(e.date+'T00:00:00')>=today);
+  const past=allMonth.filter(e=>new Date(e.date+'T00:00:00')<today);
+  const el=document.getElementById('event-list');
+  const em=document.getElementById('event-empty');
+  if(!allMonth.length){el.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  let html=upcoming.map(e=>eventItemHTML(e,false)).join('');
+  if(past.length){
+    html+=`<div class="past-divider" onclick="togglePast()">${showPastEvents?'▲':'▼'} ${past.length} past event${past.length>1?'s':''}</div>`;
+    if(showPastEvents) html+=past.map(e=>eventItemHTML(e,true)).join('');
+  }
+  el.innerHTML=html;
+}
+function eventItemHTML(e,isPast){
+  const d=new Date(e.date+'T00:00:00');
+  return `<div class="event-item${isPast?' past':''}">
+    <div class="event-date-box"><div class="event-date-day">${d.getDate()}</div><div class="event-date-mon">${MONTHS_EN[d.getMonth()].substring(0,3)}</div></div>
+    <div style="flex:1">
+      <div class="ml" style="font-size:13px">${e.nameML}</div>
+      <div style="font-size:12px;color:var(--text-soft)">${e.nameEN}</div>
+      <div style="font-size:11px;color:var(--text-soft);margin-top:2px">${formatTime(e.time)}&nbsp;<span class="badge ${TYPE_BADGE[e.type]||'badge-gold'}">${e.type}</span></div>
+    </div>
+  </div>`;
+}
+function togglePast(){showPastEvents=!showPastEvents;renderCalendar();}
+function changeMonth(d){currentMonth+=d;if(currentMonth>11){currentMonth=0;currentYear++;}if(currentMonth<0){currentMonth=11;currentYear--;}renderCalendar();}
+
+/* ═══ DEVOTEES ═══ */
+function renderDevotees(q) {
+  const today=new Date(); const mm=today.getMonth()+1,dd=today.getDate();
+  const list=q?devotees.filter(d=>d.name.toLowerCase().includes(q.toLowerCase())||(d.place||'').toLowerCase().includes(q.toLowerCase())):devotees;
+  const el=document.getElementById('devotee-list');
+  const em=document.getElementById('devotee-empty');
+  if(!list.length){el.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  el.innerHTML=list.map(d=>{
+    let bdaySoon='';
+    if(d.bday){const[,bm,bd]=d.bday.split('-').map(Number);const bdate=new Date(today.getFullYear(),bm-1,bd);const diff=Math.round((bdate-today)/(1000*60*60*24));if(diff>=0&&diff<=7)bdaySoon=`<span class="bday-soon">${diff===0?'🎂 Today':diff===1?'🎂 Tmrw':'🎂 '+diff+'d'}</span>`;}
+    const bdayStr=d.bday?`<span style="font-size:11px;color:var(--text-soft)"> · 🎂 ${new Date(d.bday+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</span>`:'';
+    return `<div class="devotee-item">
+      <div class="avatar">${initials(d.name)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500">${d.name}${bdaySoon}</div>
+        <div style="font-size:11px;color:var(--text-soft)">${[d.place,d.star].filter(Boolean).join(' · ')}${bdayStr}</div>
+        ${d.note?`<div style="font-size:11px;color:var(--text-soft)">${d.note}</div>`:''}
+      </div>
+      <div style="font-size:11px;color:var(--text-soft);flex-shrink:0;text-align:right">${d.phone||''}</div>
+    </div>`;
+  }).join('');
+}
+function searchDevotees(q){renderDevotees(q);}
+
+/* ═══ NOTICES ═══ */
+const NOTICE_TYPE_ICON = {event:'📅',birth:'🎉',death:'🕯️',urgent:'🔔'};
+const NOTICE_TYPE_CLASS = {event:'',birth:'broadcast-type-birth',death:'broadcast-type-death',urgent:'broadcast-type-urgent'};
+
+function noticeBannerHTML(n, showDelete) {
+  const d=new Date(n.ts).toLocaleDateString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  const waMsg=encodeURIComponent(`${NOTICE_TYPE_ICON[n.type]||'📢'} *കോഞ്ഞിപ്പറമ്പിൽ ക്ഷേത്രം*\n\n${n.msgML?n.msgML+'\n\n':''}${n.msg}\n\n_${d}_`);
+  return `<div class="broadcast-banner ${NOTICE_TYPE_CLASS[n.type]||''}" id="notice-${n.id}">
+    <div class="broadcast-date">${NOTICE_TYPE_ICON[n.type]||'📢'} ${d}</div>
+    ${n.msgML?`<div class="broadcast-msg ml" style="margin-bottom:3px">${n.msgML}</div>`:''}
+    <div class="broadcast-msg">${n.msg}</div>
+    <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+      <a href="https://wa.me/?text=${waMsg}" target="_blank" style="background:#25D366;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;text-decoration:none;font-family:'DM Sans',sans-serif">📱 WhatsApp</a>
+      ${showDelete?`<button onclick="deleteNotice('${n.id}')" style="border:none;background:var(--crimson-light);color:var(--crimson);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Remove</button>`:''}
+    </div>
+  </div>`;
+}
+
+function renderNoticesPage() {
+  const el=document.getElementById('notices-list');
+  const em=document.getElementById('notices-empty');
+  if(!notices.length){el.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  el.innerHTML=notices.map(n=>noticeBannerHTML(n,false)).join('');
+}
+
+function renderAdminNotices() {
+  const el=document.getElementById('admin-notices-list');
+  if(!notices.length){el.innerHTML='<div style="font-size:13px;color:var(--text-soft);padding:6px 0">No notices yet</div>';return;}
+  el.innerHTML=notices.map(n=>noticeBannerHTML(n,true)).join('');
+}
+
+async function sendBroadcast(btn) {
+  const msg=document.getElementById('bc-msg').value.trim();
+  const msgML=document.getElementById('bc-msg-ml').value.trim();
+  const type=document.getElementById('bc-type').value;
+  if(!msg){showToast('Enter a message');return;}
+  const n={id:'n'+Date.now(),ts:Date.now(),type,msg,msgML};
+  setLoading(btn,true);
+  if(USING_SHEETS){const res=await sheetsCall('addNotice',{notice:n});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
+  notices.unshift(n);
+  lastBroadcast=n;
+  document.getElementById('bc-msg').value='';
+  document.getElementById('bc-msg-ml').value='';
+  setLoading(btn,false);
+  showToast('Notice posted!');
+  renderAdminNotices();
+  renderHome();
+  // Show WhatsApp button
+  document.getElementById('wa-btn').style.display='block';
+}
+
+function shareWhatsApp() {
+  if(!lastBroadcast) return;
+  const n=lastBroadcast;
+  const d=new Date(n.ts).toLocaleDateString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  const msg=encodeURIComponent(`${NOTICE_TYPE_ICON[n.type]||'📢'} *കോഞ്ഞിപ്പറമ്പിൽ ക്ഷേത്രം*\n\n${n.msgML?n.msgML+'\n\n':''}${n.msg}\n\n_${d}_`);
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+
+function deleteNotice(id){
+  if(!confirm('Remove this notice?'))return;
+  notices=notices.filter(n=>n.id!==id);
+  renderAdminNotices();renderHome();showToast('Notice removed');
+}
+
+/* ═══ PIN ENGINE ═══ */
+const PIN_META={
+  admin:{prefix:'ad',error:'admin-pin-error',onSuccess:unlockAdmin},
+  devlogin:{prefix:'dl',error:'dev-login-error',onSuccess:checkDevoteePin}
+};
+function pinPress(ctx,n){
+  if(pinBuffers[ctx].length>=4)return;
+  pinBuffers[ctx]+=n;updatePinDots(ctx);
+  if(pinBuffers[ctx].length===4){setTimeout(()=>{PIN_META[ctx].onSuccess(pinBuffers[ctx]);pinBuffers[ctx]='';updatePinDots(ctx);},180);}
+}
+function pinDel(ctx){pinBuffers[ctx]=pinBuffers[ctx].slice(0,-1);updatePinDots(ctx);}
+function updatePinDots(ctx){const m=PIN_META[ctx];for(let i=0;i<4;i++)document.getElementById(m.prefix+i).classList.toggle('filled',i<pinBuffers[ctx].length);}
+function unlockAdmin(pin){
+  if(pin===ADMIN_PIN){adminUnlocked=true;document.getElementById('pin-screen').style.display='none';document.getElementById('admin-panel').style.display='block';document.getElementById('admin-pin-error').textContent='';}
+  else document.getElementById('admin-pin-error').textContent='Incorrect PIN. Try again.';
+}
+function lockAdmin(){adminUnlocked=false;document.getElementById('pin-screen').style.display='block';document.getElementById('admin-panel').style.display='none';pinBuffers.admin='';updatePinDots('admin');}
+function checkDevoteePin(pin){
+  const dev=devotees.find(d=>d.pin===pin);
+  if(dev){
+    selfEditDevoteeId=dev.id;
+    document.getElementById('dev-login-step').style.display='none';
+    document.getElementById('dev-edit-step').style.display='block';
+    document.getElementById('self-name').value=dev.name||'';
+    document.getElementById('self-phone').value=dev.phone||'';
+    document.getElementById('self-place').value=dev.place||'';
+    document.getElementById('self-bday').value=dev.bday||'';
+    document.getElementById('self-star').value=dev.star||'';
+    document.getElementById('dev-login-error').textContent='';
+  } else document.getElementById('dev-login-error').textContent='PIN not found. Contact admin.';
+}
+
+/* ═══ OVERLAYS ═══ */
+function openDevoteeLogin(){
+  selfEditDevoteeId=null;pinBuffers.devlogin='';updatePinDots('devlogin');
+  document.getElementById('dev-login-step').style.display='block';
+  document.getElementById('dev-edit-step').style.display='none';
+  document.getElementById('dev-login-error').textContent='';
+  document.getElementById('devotee-overlay').classList.add('open');
+}
+function closeOverlay(id){document.getElementById(id).classList.remove('open');}
+
+/* ═══ SELF EDIT ═══ */
+async function saveSelfEdit(btn){
+  const idx=devotees.findIndex(d=>d.id===selfEditDevoteeId);
+  if(idx<0)return;
+  const updated={...devotees[idx],name:document.getElementById('self-name').value.trim()||devotees[idx].name,phone:document.getElementById('self-phone').value.trim(),place:document.getElementById('self-place').value.trim(),bday:document.getElementById('self-bday').value,star:document.getElementById('self-star').value};
+  setLoading(btn,true);
+  if(USING_SHEETS){const res=await sheetsCall('updateDevotee',{devotee:updated});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
+  devotees[idx]=updated;setLoading(btn,false);closeOverlay('devotee-overlay');renderDevotees('');showToast('Details updated!');
+}
+
+/* ═══ PIN GENERATOR ═══ */
+function generatePin(){
+  const pin=String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('dev-pin').value=pin;
+  document.getElementById('new-pin-val').textContent=pin;
+  document.getElementById('new-pin-display').style.display='block';
+}
+
+/* ═══ ADD EVENT/DEVOTEE ═══ */
+async function addEvent(btn){
+  const nameML=document.getElementById('ev-name-ml').value.trim();
+  const nameEN=document.getElementById('ev-name-en').value.trim();
+  const date=document.getElementById('ev-date').value;
+  const time=document.getElementById('ev-time').value;
+  const type=document.getElementById('ev-type').value;
+  if(!nameEN||!date){showToast('Fill event name and date');return;}
+  const ev={id:'e'+Date.now(),nameML:nameML||nameEN,nameEN,date,time,type};
+  setLoading(btn,true);
+  if(USING_SHEETS){const res=await sheetsCall('addEvent',{event:ev});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
+  events.push(ev);['ev-name-ml','ev-name-en','ev-date','ev-time'].forEach(id=>document.getElementById(id).value='');
+  setLoading(btn,false);showToast('Event added!');renderHome();
+}
+
+async function addDevotee(btn){
+  const name=document.getElementById('dev-name').value.trim();
+  const phone=document.getElementById('dev-phone').value.trim();
+  const place=document.getElementById('dev-place').value.trim();
+  const star=document.getElementById('dev-star').value;
+  const pin=String(document.getElementById('dev-pin').value).trim();
+  const note=document.getElementById('dev-note').value.trim();
+  const bday=document.getElementById('dev-bday').value;
+  if(!name){showToast('Enter a name');return;}
+  if(pin&&(pin.length!==4||!/^\d{4}$/.test(pin))){showToast('PIN must be 4 digits');return;}
+  const dev={id:'d'+Date.now(),name,phone,place,star,pin,note,bday};
+  setLoading(btn,true);
+  if(USING_SHEETS){const res=await sheetsCall('addDevotee',{devotee:dev});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
+  devotees.push(dev);
+  ['dev-name','dev-phone','dev-place','dev-note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('dev-star').value='';document.getElementById('dev-pin').value='';document.getElementById('dev-bday').value='';
+  document.getElementById('new-pin-display').style.display='none';
+  setLoading(btn,false);showToast('Devotee added!');renderHome();
+}
+
+/* ═══ ADMIN MANAGE EVENTS ═══ */
+function renderManageEvents(){
+  const el=document.getElementById('manage-events-list');
+  if(!events.length){el.innerHTML='<div style="font-size:12px;color:var(--text-soft);padding:6px 0">No events yet</div>';return;}
+  el.innerHTML=events.map(e=>`<div class="manage-row">
+    <div class="manage-row-top">
+      <div style="flex:1;min-width:0"><div class="ml" style="font-size:13px;font-weight:500">${e.nameML}</div><div style="font-size:11px;color:var(--text-soft)">${e.date} · ${e.type}</div></div>
+      <div class="manage-row-actions">
+        <button class="btn btn-secondary btn-sm" onclick="toggleEdit('evf-${e.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteEvent('${e.id}')">✕</button>
+      </div>
+    </div>
+    <div class="edit-form" id="evf-${e.id}">
+      <div class="form-group"><label class="form-label">Name (ML)</label><input class="form-input ml" id="evml-${e.id}" value="${e.nameML}"></div>
+      <div class="form-group"><label class="form-label">Name (EN)</label><input class="form-input" id="even-${e.id}" value="${e.nameEN}"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date" id="evdt-${e.id}" value="${e.date}"></div>
+        <div class="form-group"><label class="form-label">Time</label><input class="form-input" type="time" id="evtm-${e.id}" value="${e.time}"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Type</label><select class="form-input" id="evtp-${e.id}">${['festival','puja','vratham','other'].map(t=>`<option value="${t}"${e.type===t?' selected':''}>${t}</option>`).join('')}</select></div>
+      <div style="display:flex;gap:7px"><button class="btn btn-primary btn-sm" onclick="saveEvent('${e.id}',this)">Save</button><button class="btn btn-secondary btn-sm" onclick="toggleEdit('evf-${e.id}')">Cancel</button></div>
+    </div>
+  </div>`).join('');
+}
+
+function toggleEdit(id){document.getElementById(id).classList.toggle('open');}
+
+async function saveEvent(id,btn){
+  const idx=events.findIndex(e=>e.id===id);if(idx<0)return;
+  const updated={...events[idx],nameML:document.getElementById('evml-'+id).value.trim(),nameEN:document.getElementById('even-'+id).value.trim(),date:document.getElementById('evdt-'+id).value,time:document.getElementById('evtm-'+id).value,type:document.getElementById('evtp-'+id).value};
+  setLoading(btn,true);
+  if(USING_SHEETS){const res=await sheetsCall('updateEvent',{event:updated});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
+  events[idx]=updated;setLoading(btn,false);renderManageEvents();renderHome();showToast('Event updated!');
+}
+async function deleteEvent(id){
+  if(!confirm('Remove this event?'))return;
+  if(USING_SHEETS)await sheetsCall('deleteEvent',{id});
+  events=events.filter(e=>e.id!==id);renderManageEvents();renderHome();showToast('Event removed');
+}
+
+/* ═══ ADMIN MANAGE DEVOTEES ═══ */
+function renderManageDevotees(){
+  const el=document.getElementById('manage-devotees-list');
+  if(!devotees.length){el.innerHTML='<div style="font-size:12px;color:var(--text-soft);padding:6px 0">No devotees yet</div>';return;}
+  const STARS=['Aswathi','Bharani','Karthika','Rohini','Makayiram','Thiruvathira','Punartham','Pooyam','Ayilyam','Makam','Pooram','Uthram','Atham','Chithira','Chothi','Vishakham','Anizham','Thrikketta','Moolam','Pooradam','Uthradam','Thiruvonam','Avittam','Chathayam','Pooruruttathi','Uthrattathi','Revathi'];
+  el.innerHTML=devotees.map(d=>`<div class="manage-row">
+    <div class="manage-row-top">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500">${d.name}</div>
+        <div style="font-size:11px;color:var(--text-soft)">${[d.place,d.star].filter(Boolean).join(' · ')}</div>
+        <div style="font-size:11px;color:var(--gold)">PIN: ${d.pin||'not set'}</div>
+      </div>
+      <div class="manage-row-actions">
+        <button class="btn btn-secondary btn-sm" onclick="toggleEdit('devf-${d.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteDevotee('${d.id}')">✕</button>
+      </div>
+    </div>
+    <div class="edit-form" id="devf-${d.id}">
+      <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="dn-${d.id}" value="${d.name||''}"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" id="dp-${d.id}" value="${d.phone||''}"></div>
+      <div class="form-group"><label class="form-label">Place</label><input class="form-input" id="dpl-${d.id}" value="${d.place||''}"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Birthday</label><input class="form-input" type="date" id="dbd-${d.id}" value="${d.bday||''}"></div>
+        <div class="form-group"><label class="form-label">Nakshatra</label><select class="form-input" id="dst-${d.id}"><option value="">Select</option>${STARS.map(s=>`<option${d.star===s?' selected':''}>${s}</option>`).join('')}</select></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Personal PIN</label>
+        <div style="display:flex;gap:7px;align-items:center">
+          <input class="form-input" type="number" id="dpin-${d.id}" value="${d.pin||''}" placeholder="4 digits" style="flex:1">
+          <button class="btn btn-secondary btn-sm" onclick="genPinFor('${d.id}')">Generate</button>
+        </div>
+        <div id="pinbox-${d.id}" style="display:none" class="pin-box"><div class="pin-box-val" id="pinval-${d.id}"></div><div class="pin-box-lbl">Share with devotee privately</div></div>
+      </div>
+      <div class="form-group"><label class="form-label">Notes</label><input class="form-input" id="dnt-${d.id}" value="${d.note||''}"></div>
+      <div style="display:flex;gap:7px"><button class="btn btn-primary btn-sm" onclick="saveDevotee('${d.id}',this)">Save</button><button class="btn btn-secondary btn-sm" onclick="toggleEdit('devf-${d.id}')">Cancel</button></div>
+    </div>
+  </div>`).join('');
+}
+
+function genPinFor(id){
+  const pin=String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('dpin-'+id).value=pin;
+  document.getElementById('pinval-'+id).textContent=pin;
+  document.getElementById('pinbox-'+id).style.display='block';
+}
+
+async function saveDevotee(id,btn){
+  const idx=devotees.findIndex(d=>d.id===id);if(idx<0)return;
+  const newPin=String(document.getElementById('dpin-'+id).value).trim();
+  if(newPin&&(newPin.length!==4||!/^\d{4}$/.test(newPin))){showToast('PIN must be 4 digits');return;}
+  const updated={...devotees[idx],name:document.getElementById('dn-'+id).value.trim(),phone:document.getElementById('dp-'+id).value.trim(),place:document.getElementById('dpl-'+id).value.trim(),star:document.getElementById('dst-'+id).value,pin:newPin||devotees[idx].pin,note:document.getElementById('dnt-'+id).value.trim(),bday:document.getElementById('dbd-'+id).value};
+  setLoading(btn,true);
+  if(USING_SHEETS){const res=await sheetsCall('updateDevotee',{devotee:updated});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
+  devotees[idx]=updated;setLoading(btn,false);renderManageDevotees();renderDevotees('');showToast('Devotee updated!');
+}
+async function deleteDevotee(id){
+  if(!confirm('Remove this devotee?'))return;
+  if(USING_SHEETS)await sheetsCall('deleteDevotee',{id});
+  devotees=devotees.filter(d=>d.id!==id);renderManageDevotees();renderHome();showToast('Devotee removed');
+}
+
+/* ═══ SETTINGS ═══ */
+async function changeAdminPin(){
+  const cur=document.getElementById('cur-pin').value.trim();
+  const np=document.getElementById('new-pin').value.trim();
+  const np2=document.getElementById('new-pin2').value.trim();
+  if(cur!==ADMIN_PIN){showToast('Current PIN incorrect');return;}
+  if(np.length!==4||!/^\d{4}$/.test(np)){showToast('New PIN must be 4 digits');return;}
+  if(np!==np2){showToast('PINs do not match');return;}
+  if(USING_SHEETS)await sheetsCall('setAdminPin',{pin:np});
+  ADMIN_PIN=np;['cur-pin','new-pin','new-pin2'].forEach(id=>document.getElementById(id).value='');
+  showToast('Admin PIN updated!');
+}
+
+/* ═══ ADMIN TABS ═══ */
+function adminTab(t,btn){
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['add-event','add-devotee','broadcast','manage-events','manage-devotees','settings'].forEach(id=>{document.getElementById('atab-'+id).style.display='none';});
+  document.getElementById('atab-'+t).style.display='block';
+  if(t==='manage-events')renderManageEvents();
+  if(t==='manage-devotees')renderManageDevotees();
+  if(t==='broadcast')renderAdminNotices();
+}
+
+/* ═══ SHEETS ═══ */
+async function sheetsCall(action,payload={}){
+  if(!USING_SHEETS)return null;
+  try{const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action,...payload})});return await res.json();}catch(e){return null;}
+}
+async function loadFromSheets(){
+  if(!USING_SHEETS)return;
+  const data=await sheetsCall('getAll');
+  if(data&&data.events){events=data.events;devotees=data.devotees;if(data.notices)notices=data.notices;if(data.adminPin)ADMIN_PIN=data.adminPin;}
+  renderHome();renderCalendar();renderDevotees('');
+}
+
+/* ═══ UTILS ═══ */
+function formatTime(t){if(!t)return'';const[h,m]=t.split(':');const hh=parseInt(h);return`${hh%12||12}:${m} ${hh>=12?'PM':'AM'}`;}
+function initials(n){return(n||'').split(' ').map(x=>x[0]||'').join('').substring(0,2).toUpperCase();}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function setLoading(btn,on){if(!btn)return;btn.disabled=on;if(on){btn._txt=btn.textContent;btn.innerHTML='<span class="spinner"></span>Saving...';}else{btn.innerHTML=btn._txt;}}
+
+/* ═══ INIT ═══ */
+renderMalDate();
+renderHome();
+loadSunTimes();
+loadWeather();
+loadFromSheets();
+</script>
+
+<!--
+════════════════════════════════════════════════════════════
+ GOOGLE SHEETS SETUP — read carefully before deploying
+════════════════════════════════════════════════════════════
+
+STEP 1 — Create Google Sheet
+  1. sheets.google.com → New sheet → Name: "Konhiparambil Temple"
+  2. Create 4 tabs named EXACTLY: Events | Devotees | Notices | Config
+  3. Events headers (row 1):   id | nameML | nameEN | date | time | type
+  4. Devotees headers (row 1): id | name | phone | place | star | pin | note | bday
+  5. Notices headers (row 1):  id | ts | type | msg | msgML
+  6. Config: A1=adminPin  B1=1108
+
+STEP 2 — Apps Script
+  1. Sheet → Extensions → Apps Script → replace all code with below → Save
+  2. Deploy → New Deployment → Web App → Execute as Me → Anyone → Deploy
+  3. Copy the Web App URL
+
+STEP 3 — Paste URL in this file
+  Find: const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+  Replace with your URL, save, upload to GitHub as index.html
+
+STEP 4 — GitHub Pages
+  1. github.com → Sign Up → username: konhiparambil
+  2. New repo named: temple (Public)
+  3. Upload this file as index.html
+  4. Settings → Pages → Source: main → Save
+  5. URL: https://konhiparambil.github.io/temple
+
+════════════════════════════════════════════════════════════
+ APPS SCRIPT CODE — paste into Apps Script editor
+════════════════════════════════════════════════════════════
+
+function doPost(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const data = JSON.parse(e.postData.contents);
+  const action = data.action;
+  const evSheet = ss.getSheetByName('Events');
+  const devSheet = ss.getSheetByName('Devotees');
+  const notSheet = ss.getSheetByName('Notices');
+  const cfgSheet = ss.getSheetByName('Config');
+  let result = {};
+
+  function sheetToObjects(sheet) {
+    const rows = sheet.getDataRange().getValues();
+    if(rows.length < 2) return [];
+    const headers = rows[0];
+    return rows.slice(1).filter(r=>r[0]).map(r=>{
+      const obj={};
+      headers.forEach((h,i)=>{ obj[h] = r[i] !== undefined ? String(r[i]) : ''; });
+      return obj;
+    });
+  }
+
+  function findRow(sheet, id) {
+    const vals = sheet.getDataRange().getValues();
+    for(let i=1;i<vals.length;i++) if(String(vals[i][0])===String(id)) return i+1;
+    return -1;
+  }
+
+  if(action === 'getAll') {
+    result = {
+      events: sheetToObjects(evSheet),
+      devotees: sheetToObjects(devSheet),
+      notices: sheetToObjects(notSheet).map(n=>({...n, ts: Number(n.ts)})).reverse(),
+      adminPin: cfgSheet.getRange('B1').getValue()
+    };
+  } else if(action === 'addEvent') {
+    const ev = data.event;
+    evSheet.appendRow([ev.id, ev.nameML, ev.nameEN, ev.date, ev.time, ev.type]);
+    result = {ok:true};
+  } else if(action === 'updateEvent') {
+    const ev = data.event;
+    const row = findRow(evSheet, ev.id);
+    if(row > 0) evSheet.getRange(row,1,1,6).setValues([[ev.id,ev.nameML,ev.nameEN,ev.date,ev.time,ev.type]]);
+    result = {ok:true};
+  } else if(action === 'deleteEvent') {
+    const row = findRow(evSheet, data.id);
+    if(row > 0) evSheet.deleteRow(row);
+    result = {ok:true};
+  } else if(action === 'addDevotee') {
+    const d = data.devotee;
+    devSheet.appendRow([d.id,d.name,d.phone,d.place,d.star,d.pin,d.note,d.bday]);
+    result = {ok:true};
+  } else if(action === 'updateDevotee') {
+    const d = data.devotee;
+    const row = findRow(devSheet, d.id);
+    if(row > 0) devSheet.getRange(row,1,1,8).setValues([[d.id,d.name,d.phone,d.place,d.star,d.pin,d.note,d.bday]]);
+    result = {ok:true};
+  } else if(action === 'deleteDevotee') {
+    const row = findRow(devSheet, data.id);
+    if(row > 0) devSheet.deleteRow(row);
+    result = {ok:true};
+  } else if(action === 'addNotice') {
+    const n = data.notice;
+    notSheet.appendRow([n.id, n.ts, n.type, n.msg, n.msgML||'']);
+    result = {ok:true};
+  } else if(action === 'deleteNotice') {
+    const row = findRow(notSheet, data.id);
+    if(row > 0) notSheet.deleteRow(row);
+    result = {ok:true};
+  } else if(action === 'setAdminPin') {
+    cfgSheet.getRange('B1').setValue(data.pin);
+    result = {ok:true};
+  }
+
+  return ContentService.createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+════════════════════════════════════════════════════════════
+-->
+</body>
+</html>
