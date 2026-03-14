@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>കോഞ്ഞിപ്പറമ്പിൽ കുടുംബ ക്ഷേത്രം</title>
+<title>കോഞ്ഞിപ്പറമ്പിൽ കുടുംബ ക്ഷേത്രം v5</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;600&family=Noto+Sans+Malayalam:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -266,7 +266,7 @@ const USING_SHEETS = SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE';
       <button class="pin-key" onclick="pinDel('admin')" style="font-size:13px;color:var(--text-soft)">⌫</button>
     </div>
     <div class="pin-error" id="admin-pin-error"></div>
-    <div style="margin-top:14px;font-size:11px;color:var(--text-soft)">Default PIN: <strong>1108</strong></div>
+
   </div>
 
   <div id="admin-panel" style="display:none">
@@ -737,8 +737,9 @@ function shareWhatsApp() {
   window.open('https://wa.me/?text='+msg,'_blank');
 }
 
-function deleteNotice(id){
+async function deleteNotice(id){
   if(!confirm('Remove this notice?'))return;
+  if(USING_SHEETS)await sheetsCall('deleteNotice',{id});
   notices=notices.filter(n=>n.id!==id);
   renderAdminNotices();renderHome();showToast('Notice removed');
 }
