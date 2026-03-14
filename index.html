@@ -159,10 +159,9 @@ const USING_SHEETS = SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE';
 <!-- HOME -->
 <div id="page-home" class="page active">
 
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
     <span class="status-dot status-offline" id="status-dot"></span>
-    <span id="status-text" style="font-size:11px;color:var(--text-soft);flex:1">Loading...</span>
-    <button onclick="loadFromSheets()" style="font-size:11px;background:var(--crimson);color:#fff;border:none;padding:5px 12px;border-radius:20px;cursor:pointer">↻ Refresh</button>
+    <span id="status-text" style="font-size:11px;color:var(--text-soft)">Syncing...</span>
   </div>
 
   <!-- Latest notice — top priority -->
@@ -652,6 +651,7 @@ function eventItemHTML(e,isPast){
 function togglePast(){showPastEvents=!showPastEvents;renderCalendar();}
 function changeMonth(d){currentMonth+=d;if(currentMonth>11){currentMonth=0;currentYear++;}if(currentMonth<0){currentMonth=11;currentYear--;}renderCalendar();}
 
+
 /* ═══ DEVOTEES ═══ */
 function renderDevotees(q) {
   const today=new Date(); const mm=today.getMonth()+1,dd=today.getDate();
@@ -688,10 +688,10 @@ function noticeBannerHTML(n, showDelete) {
     <div class="broadcast-date">${NOTICE_TYPE_ICON[n.type]||'📢'} ${d}</div>
     ${n.msgML?`<div class="broadcast-msg ml" style="margin-bottom:3px">${n.msgML}</div>`:''}
     <div class="broadcast-msg">${n.msg}</div>
-    <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+    ${showDelete?`<div style="display:flex;gap:6px;margin-top:8px;align-items:center">
       <a href="https://wa.me/?text=${waMsg}" target="_blank" style="background:#25D366;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;text-decoration:none;font-family:'DM Sans',sans-serif">📱 WhatsApp</a>
-      ${showDelete?`<button onclick="deleteNotice('${n.id}')" style="border:none;background:var(--crimson-light);color:var(--crimson);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Remove</button>`:''}
-    </div>
+      <button onclick="deleteNotice('${n.id}')" style="border:none;background:var(--crimson-light);color:var(--crimson);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Remove</button>
+    </div>`:''}
   </div>`;
 }
 
