@@ -520,7 +520,10 @@ function setStatus(online,msg){
 async function sheetsCall(action,payload={}){
   if(!USING_SHEETS)return null;
   try{
-    const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action,...payload}),headers:{'Content-Type':'text/plain'},mode:'cors'});
+    // Encode payload as base64 to safely pass complex objects via GET
+    const encoded=btoa(unescape(encodeURIComponent(JSON.stringify({action,...payload}))));
+    const url=SCRIPT_URL+'?d='+encodeURIComponent(encoded)+'&t='+Date.now();
+    const res=await fetch(url);
     return await res.json();
   }catch(e){console.log('sheetsCall error',e);return null;}
 }

@@ -2,24 +2,46 @@
 
 function doGet(e) {
   const action = e.parameter.action;
+
+  // Handle simple GET actions
   if (action === 'getAll') return getAllData();
   if (action === 'getAnalytics') return getAnalyticsData();
   if (action === 'logVisit') {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName('Analytics');
-    const deviceId = e.parameter.deviceId || '';
-    const ts = e.parameter.ts || Date.now();
-    const ua = e.parameter.ua || '';
-    const today = new Date().toISOString().split('T')[0];
-    sheet.appendRow([deviceId, today, ts, ua]);
+    const today = Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyy-MM-dd');
+    sheet.appendRow([e.parameter.deviceId||'', today, e.parameter.ts||Date.now(), e.parameter.ua||'']);
     return ContentService.createTextOutput('{"ok":true}').setMimeType(ContentService.MimeType.JSON);
   }
+
+  // Handle encoded payload (all write operations from sheetsCall)
+  if (e.parameter.d) {
+    try {
+      const decoded = decodeURIComponent(escape(Utilities.base64Decode(e.parameter.d, Utilities.Charset.UTF_8).map(b=>String.fromCharCode(b)).join('')));
+      const data = JSON.parse(decoded);
+      return processAction(data);
+    } catch(err) {
+      return ContentService.createTextOutput(JSON.stringify({error: err.toString()}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+
   return ContentService.createTextOutput('{}').setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
+  // Keep doPost as fallback
+  try {
+    const data = JSON.parse(e.postData.contents);
+    return processAction(data);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({error: err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function processAction(data) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const data = JSON.parse(e.postData.contents);
   const action = data.action;
   const evSheet = ss.getSheetByName('Events');
   const devSheet = ss.getSheetByName('Devotees');
@@ -37,13 +59,13 @@ function doPost(e) {
 
   if (action === 'addEvent') {
     const ev = data.event;
-    evSheet.appendRow([ev.id, ev.nameML, ev.nameEN, ev.date, ev.time, ev.type]);
+    evSheet.appendRow([ev.id, ev.nameML||ev.nameEN, ev.nameEN, ev.date, ev.time, ev.type]);
     result = {ok: true};
 
   } else if (action === 'updateEvent') {
     const ev = data.event;
     const row = findRow(evSheet, ev.id);
-    if (row > 0) evSheet.getRange(row,1,1,6).setValues([[ev.id,ev.nameML,ev.nameEN,ev.date,ev.time,ev.type]]);
+    if (row > 0) evSheet.getRange(row,1,1,6).setValues([[ev.id,ev.nameML||ev.nameEN,ev.nameEN,ev.date,ev.time,ev.type]]);
     result = {ok: true};
 
   } else if (action === 'deleteEvent') {
@@ -74,10 +96,8 @@ function doPost(e) {
 
   } else if (action === 'approveDevotee') {
     const d = data.devotee;
-    // Remove from pending
     const pendRow = findRow(pendSheet, d.id);
     if (pendRow > 0) pendSheet.deleteRow(pendRow);
-    // Add to devotees
     devSheet.appendRow([d.id,d.name,d.phone,d.place,d.star,d.pin,d.note,d.bday,'approved']);
     result = {ok: true};
 
@@ -101,14 +121,9 @@ function doPost(e) {
     result = {ok: true};
 
   } else if (action === 'logVisit') {
-    const today = new Date().toISOString().split('T')[0];
-    analyticsSheet.appendRow([data.deviceId, today, data.ts, data.ua||'']);
+    const today = Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyy-MM-dd');
+    analyticsSheet.appendRow([data.deviceId||'', today, data.ts||Date.now(), data.ua||'']);
     result = {ok: true};
-
-  } else if (action === 'getAnalytics') {
-    const rows = analyticsSheet.getDataRange().getValues();
-    const visits = rows.slice(1).map(r => ({deviceId:String(r[0]),date:String(r[1]),ts:Number(r[2])}));
-    result = {visits};
   }
 
   return ContentService.createTextOutput(JSON.stringify(result))
@@ -190,7 +205,7 @@ function getAnalyticsData() {
   const visits = rows.slice(1).filter(r=>r[0]).map(r => ({
     deviceId: String(r[0]),
     date: r[1] instanceof Date ?
-      r[1].getFullYear()+'-'+String(r[1].getMonth()+1).padStart(2,'0')+'-'+String(r[1].getDate()).padStart(2,'0') :
+      Utilities.formatDate(r[1], 'Asia/Kolkata', 'yyyy-MM-dd') :
       String(r[1]),
     ts: Number(r[2]) || 0
   }));
