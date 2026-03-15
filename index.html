@@ -548,7 +548,11 @@ async function loadFromSheets(){
 async function logVisit(){
   if(!USING_SHEETS)return;
   const deviceId=localStorage.getItem('kshetram_did')||(()=>{const id='d'+Date.now()+Math.random().toString(36).substr(2,5);localStorage.setItem('kshetram_did',id);return id;})();
-  sheetsCall('logVisit',{deviceId,ts:Date.now(),ua:navigator.userAgent.substring(0,80)});
+  const ts=Date.now();
+  const ua=encodeURIComponent(navigator.userAgent.substring(0,80));
+  try{
+    await fetch(`${SCRIPT_URL}?action=logVisit&deviceId=${deviceId}&ts=${ts}&ua=${ua}`);
+  }catch(e){console.log('logVisit error',e);}
 }
 
 /* ═══ NAVIGATION ═══ */
@@ -814,12 +818,11 @@ async function saveSelfEdit(btn){
   };
   setLoading(btn,true);
   if(USING_SHEETS){const res=await sheetsCall('updateDevotee',{devotee:updated});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
-  devotees[idx]=updated;
   loggedInDevotee=updated;
   setLoading(btn,false);
   closeOverlay('self-edit-overlay');
-  renderDevotees('');renderHome();
   showToast('Details updated!');
+  await loadFromSheets();
 }
 
 /* ═══ ADMIN PIN ═══ */
@@ -900,11 +903,10 @@ async function approveDevotee(id,btn){
   const dev={...pendingDevotees[idx],status:'approved'};
   setLoading(btn,true);
   if(USING_SHEETS){const res=await sheetsCall('approveDevotee',{devotee:dev});if(!res||res.error){showToast('Failed');setLoading(btn,false);return;}}
-  devotees.push(dev);
-  pendingDevotees.splice(idx,1);
   setLoading(btn,false);
-  renderApprovals();renderDevotees('');
   showToast(dev.name+' approved!');
+  await loadFromSheets();
+  renderApprovals();
 }
 
 async function rejectDevotee(id){
@@ -912,7 +914,7 @@ async function rejectDevotee(id){
   const idx=pendingDevotees.findIndex(d=>d.id===id);
   if(idx<0)return;
   if(USING_SHEETS)await sheetsCall('rejectPending',{id});
-  pendingDevotees.splice(idx,1);
+  await loadFromSheets();
   renderApprovals();
   showToast('Registration rejected');
 }
@@ -932,9 +934,9 @@ async function addEvent(btn){
     const res=await sheetsCall('addEvent',{event:ev});
     if(!res||res.error){showToast('Save failed: '+(res?res.error:'no response'));setLoading(btn,false);return;}
   }
-  events.push(ev);
   ['ev-name-ml','ev-name-en','ev-date','ev-time'].forEach(id=>document.getElementById(id).value='');
-  setLoading(btn,false);showToast('Event added!');renderHome();renderCalendar();
+  setLoading(btn,false);showToast('Event added!');
+  await loadFromSheets();
 }
 
 /* ═══ ADD DEVOTEE (admin) ═══ */
@@ -955,11 +957,11 @@ async function addDevotee(btn){
   const dev={id:'d'+Date.now(),name,phone,place,star,pin,note,bday,status:'approved'};
   setLoading(btn,true);
   if(USING_SHEETS){const res=await sheetsCall('addDevotee',{devotee:dev});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
-  devotees.push(dev);
   ['dev-name','dev-phone','dev-place','dev-note'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('dev-star').value='';document.getElementById('dev-pin').value='';document.getElementById('dev-bday').value='';
   document.getElementById('new-pin-display').style.display='none';
-  setLoading(btn,false);showToast('Devotee added!');renderHome();renderDevotees('');
+  setLoading(btn,false);showToast('Devotee added!');
+  await loadFromSheets();
 }
 
 /* ═══ MANAGE EVENTS ═══ */
@@ -994,13 +996,13 @@ async function saveEvent(id,btn){
   const updated={...events[idx],nameML:document.getElementById('evml-'+id).value.trim(),nameEN:document.getElementById('even-'+id).value.trim(),date:document.getElementById('evdt-'+id).value,time:document.getElementById('evtm-'+id).value,type:document.getElementById('evtp-'+id).value};
   setLoading(btn,true);
   if(USING_SHEETS){const res=await sheetsCall('updateEvent',{event:updated});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
-  events[idx]=updated;setLoading(btn,false);renderManageEvents();renderHome();renderCalendar();showToast('Event updated!');
+  setLoading(btn,false);showToast('Event updated!');await loadFromSheets();renderManageEvents();
 }
 
 async function deleteEvent(id){
   if(!confirm('Remove this event?'))return;
   if(USING_SHEETS)await sheetsCall('deleteEvent',{id});
-  events=events.filter(e=>e.id!==id);renderManageEvents();renderHome();renderCalendar();showToast('Event removed');
+  showToast('Event removed');await loadFromSheets();renderManageEvents();
 }
 
 /* ═══ MANAGE DEVOTEES ═══ */
@@ -1052,13 +1054,13 @@ async function saveDevotee(id,btn){
   const updated={...devotees[idx],name:document.getElementById('dn-'+id).value.trim(),phone:newPhone,place:document.getElementById('dpl-'+id).value.trim(),star:document.getElementById('dst-'+id).value,pin:newPin||devotees[idx].pin,note:document.getElementById('dnt-'+id).value.trim(),bday:document.getElementById('dbd-'+id).value};
   setLoading(btn,true);
   if(USING_SHEETS){const res=await sheetsCall('updateDevotee',{devotee:updated});if(!res||res.error){showToast('Save failed');setLoading(btn,false);return;}}
-  devotees[idx]=updated;setLoading(btn,false);renderManageDevotees();renderDevotees('');showToast('Devotee updated!');
+  setLoading(btn,false);showToast('Devotee updated!');await loadFromSheets();renderManageDevotees();
 }
 
 async function deleteDevotee(id){
   if(!confirm('Remove this devotee?'))return;
   if(USING_SHEETS)await sheetsCall('deleteDevotee',{id});
-  devotees=devotees.filter(d=>d.id!==id);renderManageDevotees();renderHome();showToast('Devotee removed');
+  showToast('Devotee removed');await loadFromSheets();renderManageDevotees();
 }
 
 /* ═══ ANALYTICS ═══ */
@@ -1067,9 +1069,17 @@ async function renderAnalytics(){
   const chartEl=document.getElementById('analytics-chart');
   el.innerHTML='<div style="font-size:12px;color:var(--text-soft);grid-column:span 2">Loading analytics...</div>';
   if(!USING_SHEETS){el.innerHTML='<div style="font-size:12px;color:var(--text-soft);grid-column:span 2">Connect Google Sheets to see analytics</div>';return;}
-  const data=await sheetsCall('getAnalytics');
-  if(!data||!data.visits){el.innerHTML='<div style="font-size:12px;color:var(--text-soft);grid-column:span 2">No data yet</div>';return;}
-  const visits=data.visits;
+  // Fetch analytics via GET to avoid CORS issues
+  let visits = [];
+  try {
+    const res = await fetch(SCRIPT_URL+'?action=getAnalytics&t='+Date.now());
+    const data = await res.json();
+    visits = data.visits || [];
+  } catch(e) {
+    el.innerHTML='<div style="font-size:12px;color:var(--text-soft);grid-column:span 2">Could not load analytics</div>';
+    return;
+  }
+  if(!visits.length){el.innerHTML='<div style="font-size:12px;color:var(--text-soft);grid-column:span 2">No visits recorded yet. Data appears after first page load.</div>';return;}
   const today=new Date().toISOString().split('T')[0];
   const todayCount=visits.filter(v=>v.date===today).length;
   const uniqueToday=new Set(visits.filter(v=>v.date===today).map(v=>v.deviceId)).size;

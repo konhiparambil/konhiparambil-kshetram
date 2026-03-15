@@ -3,6 +3,17 @@
 function doGet(e) {
   const action = e.parameter.action;
   if (action === 'getAll') return getAllData();
+  if (action === 'getAnalytics') return getAnalyticsData();
+  if (action === 'logVisit') {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName('Analytics');
+    const deviceId = e.parameter.deviceId || '';
+    const ts = e.parameter.ts || Date.now();
+    const ua = e.parameter.ua || '';
+    const today = new Date().toISOString().split('T')[0];
+    sheet.appendRow([deviceId, today, ts, ua]);
+    return ContentService.createTextOutput('{"ok":true}').setMimeType(ContentService.MimeType.JSON);
+  }
   return ContentService.createTextOutput('{}').setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -170,4 +181,19 @@ function getAllData() {
     notices: getNotices(),
     adminPin: String(cfgSheet.getRange('B1').getValue())
   })).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getAnalyticsData() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Analytics');
+  const rows = sheet.getDataRange().getValues();
+  const visits = rows.slice(1).filter(r=>r[0]).map(r => ({
+    deviceId: String(r[0]),
+    date: r[1] instanceof Date ?
+      r[1].getFullYear()+'-'+String(r[1].getMonth()+1).padStart(2,'0')+'-'+String(r[1].getDate()).padStart(2,'0') :
+      String(r[1]),
+    ts: Number(r[2]) || 0
+  }));
+  return ContentService.createTextOutput(JSON.stringify({visits}))
+    .setMimeType(ContentService.MimeType.JSON);
 }
