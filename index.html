@@ -520,11 +520,11 @@ function setStatus(online,msg){
 async function sheetsCall(action,payload={}){
   if(!USING_SHEETS)return null;
   try{
-    // Encode payload as base64 to safely pass complex objects via GET
-    const encoded=btoa(unescape(encodeURIComponent(JSON.stringify({action,...payload}))));
-    const url=SCRIPT_URL+'?d='+encodeURIComponent(encoded)+'&t='+Date.now();
+    const body=JSON.stringify({action,...payload});
+    const url=SCRIPT_URL+'?data='+encodeURIComponent(body)+'&t='+Date.now();
     const res=await fetch(url);
-    return await res.json();
+    const text=await res.text();
+    return JSON.parse(text);
   }catch(e){console.log('sheetsCall error',e);return null;}
 }
 
@@ -541,7 +541,8 @@ async function loadFromSheets(){
       notices=data.notices||[];
       pendingDevotees=data.pending||[];
       if(data.adminPin)ADMIN_PIN=String(data.adminPin);
-      setStatus(true,'Synced ✓');
+      console.log('Events loaded:',events.map(e=>e.nameEN+':'+e.date));
+      setStatus(true,'Synced ✓ '+events.length+' events');
     }else{setStatus(false,'Sync failed');}
   }catch(e){setStatus(false,'Offline');}
   renderHome();renderCalendar();renderDevotees('');
@@ -574,7 +575,10 @@ function showPage(p,btn){
 /* ═══ HOME ═══ */
 function renderHome(){
   const today=new Date();today.setHours(0,0,0,0);
-  const upcoming=events.filter(e=>new Date(e.date+'T00:00:00')>=today).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,3);
+  const upcoming=events.filter(e=>{
+    if(!e.date||!e.date.match(/^\d{4}-\d{2}-\d{2}$/))return false;
+    return new Date(e.date+'T00:00:00')>=today;
+  }).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,3);
   const el=document.getElementById('home-upcoming');
   el.innerHTML=upcoming.length?upcoming.map(e=>eventCardHTML(e)).join(''):'<div style="font-size:13px;color:var(--text-soft);padding:6px 0">No upcoming events</div>';
   const noticeEl=document.getElementById('home-notice-section');
@@ -630,7 +634,11 @@ function renderCalendar(){
   document.getElementById('month-title-ml').textContent=MONTHS_ML[currentMonth];
   document.getElementById('month-title-en').textContent=MONTHS_EN[currentMonth]+' '+currentYear;
   const today=new Date();today.setHours(0,0,0,0);
-  const allMonth=events.filter(e=>{const d=new Date(e.date+'T00:00:00');return d.getMonth()===currentMonth&&d.getFullYear()===currentYear;}).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const allMonth=events.filter(e=>{
+    if(!e.date||!e.date.match(/^\d{4}-\d{2}-\d{2}$/))return false;
+    const d=new Date(e.date+'T00:00:00');
+    return d.getMonth()===currentMonth&&d.getFullYear()===currentYear;
+  }).sort((a,b)=>new Date(a.date)-new Date(b.date));
   const upcoming=allMonth.filter(e=>new Date(e.date+'T00:00:00')>=today);
   const past=allMonth.filter(e=>new Date(e.date+'T00:00:00')<today);
   const el=document.getElementById('event-list');
@@ -1083,10 +1091,16 @@ async function renderAnalytics(){
     return;
   }
   if(!visits.length){el.innerHTML='<div style="font-size:12px;color:var(--text-soft);grid-column:span 2">No visits recorded yet. Data appears after first page load.</div>';return;}
-  const today=new Date().toISOString().split('T')[0];
-  const todayCount=visits.filter(v=>v.date===today).length;
+  // Use local date (IST) not UTC
+  const now=new Date();
+  const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
   const uniqueToday=new Set(visits.filter(v=>v.date===today).map(v=>v.deviceId)).size;
-  const last7=new Set(visits.filter(v=>{const d=new Date(v.date);const diff=(new Date()-d)/(1000*60*60*24);return diff<=7;}).map(v=>v.deviceId)).size;
+  const last7=new Set(visits.filter(v=>{
+    if(!v.date)return false;
+    const d=new Date(v.date+'T00:00:00');
+    const diff=(now-d)/(1000*60*60*24);
+    return diff>=0&&diff<=7;
+  }).map(v=>v.deviceId)).size;
   const total=new Set(visits.map(v=>v.deviceId)).size;
   el.innerHTML=`
     <div class="stat-tile"><div class="stat-val">${uniqueToday}</div><div class="stat-lbl">Unique today</div></div>
@@ -1095,7 +1109,7 @@ async function renderAnalytics(){
     <div class="stat-tile"><div class="stat-val">${devotees.length}</div><div class="stat-lbl">Devotees</div></div>`;
   // Daily bar chart (last 14 days)
   const days={};
-  for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days[d.toISOString().split('T')[0]]=0;}
+  for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const dk=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');days[dk]=0;}
   visits.forEach(v=>{if(days[v.date]!==undefined)days[v.date]++;});
   const maxV=Math.max(...Object.values(days),1);
   chartEl.innerHTML=`<div style="display:flex;align-items:flex-end;gap:4px;height:80px">
